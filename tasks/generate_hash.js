@@ -52,33 +52,33 @@ module.exports = function(grunt) {
             if (grunt.file.isDir(fp)) {
                 return;
             }
-            if (file.dest) {
-                if (file.orig.expand) {
-                    file.dest = path.dirname(file.dest);
+            // console.log('expand', file);
+            // if (file.orig.expand) {
+                file.dest = path.dirname(file.dest);
+                // console.log('expand file.dest', file.dest);
+            // }
+            try{
+                var stat = fs.lstatSync(file.dest);
+                if (stat && !stat.isDirectory()) {
+                    grunt.fail.fatal('Destination ' + file.dest + ' for target ' + target + ' is not a directory');
                 }
-                try{
-                    var stat = fs.lstatSync(file.dest);
-                    if (stat && !stat.isDirectory()) {
-                        grunt.fail.fatal('Destination ' + file.dest + ' for target ' + target + ' is not a directory');
-                    }
-                } catch(e) {
-                    grunt.verbose.writeln('Destination dir ' + file.dest + ' does not exists for target ' + target + ': creating');
-                    grunt.file.mkdir(file.dest);
-                }
+            } catch(e) {
+                grunt.verbose.writeln('Destination dir ' + file.dest + ' does not exists for target ' + target + ': creating');
+                grunt.file.mkdir(file.dest);
             }
             var content = grunt.file.read(fp);
             var hash = md5(content, algorithm, encoding, fileEncoding);
             var suffix = hash.slice(0, options.length);
             var ext = path.extname(filepath);
             var newName = [path.basename(filepath, ext), suffix, ext.slice(1)].join('.');
-            var resultPath = path.resolve(file.dest, path.dirname(filepath), newName);
+            var resultPath = path.resolve(file.dest, newName);
 
-            var key = path.relative(file.orig.dest, file.dest);
-            var outKey = path.relative(file.orig.dest, resultPath);
+            // var key = path.relative(file.orig.dest, file.dest);
+            // var outKey = path.relative(file.orig.dest, resultPath);
 
             grunt.file.copy(fp, resultPath);
 
-            // grunt.log.writeln('Generated: ' + resultPath);
+            grunt.log.writeln('Generated: ' + resultPath);
             // map[unixify(key)] = unixify(outKey);
         }
         function md5(content, algorithm, encoding, fileEncoding) {
