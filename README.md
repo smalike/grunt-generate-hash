@@ -38,15 +38,17 @@ grunt.initConfig({
 
 #### algorithm
 
-Type: string
-Default: 'md5'
+Type: `string`
 
-lgorithm is dependent on the available algorithms supported by the version of OpenSSL on the platform. Examples are 'sha1', 'md5', 'sha256', 'sha512', etc. On recent releases, openssl list-message-digest-algorithms will display the available digest algorithms.
+Default: `'md5'`
+
+lgorithm is dependent on the available algorithms supported by the version of OpenSSL on the platform. Examples are `'sha1'`, `'md5'`, `'sha256'`, `'sha512'`, etc. On recent releases, `openssl list-message-digest-algorithms` will display the available digest algorithms.
 
 #### hashlen
 
-Type: number
-Default: 8
+Type: `number`
+
+Default: `8`
 
 Number of characters of the file hash to prefix the file name with.
 
